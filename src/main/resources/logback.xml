@@ -1,0 +1,21 @@
+<configuration>
+    <!-- Define the pattern for the log output -->
+    <property name="LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss} %-5level [%thread] %logger{36} - %msg%n" />
+
+    <!-- Console appender -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Root logger configuration -->
+    <root level="info">
+        <appender-ref ref="CONSOLE" />
+    </root>
+
+    <!-- Specific logger configuration -->
+    <logger name="dev.reed" level="debug" additivity="false">
+        <appender-ref ref="CONSOLE" />
+    </logger>
+</configuration>

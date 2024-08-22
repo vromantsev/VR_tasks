@@ -1,4 +1,4 @@
-package dev.reed.core.threads.starvation;
+package dev.reed.core.threads._03092024.main.starvation;
 
 import java.util.concurrent.locks.ReentrantLock;
 

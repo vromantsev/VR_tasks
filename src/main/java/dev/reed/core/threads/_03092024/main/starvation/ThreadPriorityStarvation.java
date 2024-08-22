@@ -1,4 +1,4 @@
-package dev.reed.core.threads.starvation;
+package dev.reed.core.threads._03092024.main.starvation;
 
 /**
  * Your task is to implement a starvation using the thread priority mechanism.
