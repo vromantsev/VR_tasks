@@ -9,6 +9,9 @@ import lombok.ToString;
 
 import java.time.LocalDateTime;
 
+/**
+ * Imitates an item produced by {@link Producer} and consumed by {@link Consumer}.
+ */
 @Getter
 @Setter
 @NoArgsConstructor

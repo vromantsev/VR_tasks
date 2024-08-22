@@ -6,6 +6,9 @@ import java.time.LocalDateTime;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Please refer to the task description - {@link  dev.reed.core.threads._03092024.main.producer_consumer.task.md}
+ */
 @Slf4j
 public class Producer implements Runnable {
 

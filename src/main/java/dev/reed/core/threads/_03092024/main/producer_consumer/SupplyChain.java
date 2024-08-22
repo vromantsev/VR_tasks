@@ -5,6 +5,9 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * Please refer to the task description - {@link  dev.reed.core.threads._03092024.main.producer_consumer.task.md}
+ */
 public class SupplyChain {
 
     private static final ExecutorService EXECUTOR_SERVICE = Executors.newFixedThreadPool(5);
