@@ -8,7 +8,7 @@ import java.util.concurrent.Executors;
 /**
  * Please refer to the task description - {@link  dev.reed.core.threads._03092024.main.producer_consumer.task.md}
  */
-public class SupplyChain {
+public class ProducerConsumerTest {
 
     private static final ExecutorService EXECUTOR_SERVICE = Executors.newFixedThreadPool(5);
 
