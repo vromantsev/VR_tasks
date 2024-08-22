@@ -1,6 +1,5 @@
 package dev.reed.core.threads._03092024.main.producer_consumer;
 
-import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
