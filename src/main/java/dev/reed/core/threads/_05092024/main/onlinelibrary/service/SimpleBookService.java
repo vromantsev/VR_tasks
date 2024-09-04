@@ -17,6 +17,11 @@ public class SimpleBookService implements BookService {
     private final BookRepository bookRepository;
     private final ReadWriteLock lock = new ReentrantReadWriteLock();
 
+    /**
+     * Acquired write lock and call lock() method
+     * Create a book via {@link BookRepository#create(Book)}
+     * Release a lock
+     */
     @Override
     public void create(final Book book) {
         Lock writeLock = lock.writeLock();
@@ -28,6 +33,11 @@ public class SimpleBookService implements BookService {
         }
     }
 
+    /**
+     * Acquire read lock and call lock() method
+     * Find books by author using {@link BookRepository#getAll()}
+     * Release a lock
+     */
     @Override
     public List<Book> getByAuthor(final String author) {
         Lock readLock = lock.readLock();
@@ -44,6 +54,11 @@ public class SimpleBookService implements BookService {
         }
     }
 
+    /**
+     * Acquire read lock and call lock() method
+     * Find a book by id using {@link BookRepository#getById(Long)}
+     * Release a lock
+     */
     @Override
     public Book getById(final Long bookId) {
         Lock readLock = lock.readLock();
@@ -58,10 +73,15 @@ public class SimpleBookService implements BookService {
         }
     }
 
+    /**
+     * Acquire write lock
+     * Use {@link BookRepository#getAll()}
+     * Filter the book by title and make sure the book is available
+     * Rent a book - set rentedBy and rentedAt fields + change field available to false
+     * Release a lock
+     */
     @Override
     public Book rent(final String title, final String rentedBy) {
-        Objects.requireNonNull(title, "Parameter [title] must not be empty!");
-        Objects.requireNonNull(rentedBy, "Parameter [rentedBy] must not be empty!");
         Lock writeLock = lock.writeLock();
         writeLock.lock();
         try {
@@ -87,6 +107,12 @@ public class SimpleBookService implements BookService {
         return book;
     }
 
+    /**
+     * Acquire write lock
+     * Use {@link BookRepository#getById(Long)} and implement returning logic - set rentedBy and rentedAt fields to null,
+     * and field available to true
+     * Release a lock
+     */
     @Override
     public void returnBook(final Book book) {
         Lock writeLock = lock.writeLock();
@@ -102,6 +128,11 @@ public class SimpleBookService implements BookService {
         }
     }
 
+    /**
+     * Acquire write lock
+     * Use {@link BookRepository#deleteById(Long)} method
+     * Release a lock
+     */
     @Override
     public boolean deleteById(final Long bookId) {
         Lock writeLock = lock.writeLock();
