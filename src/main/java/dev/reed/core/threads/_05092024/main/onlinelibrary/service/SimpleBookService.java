@@ -18,8 +18,20 @@ public class SimpleBookService implements BookService {
     private final ReadWriteLock lock = new ReentrantReadWriteLock();
 
     @Override
+    public void create(final Book book) {
+        Lock writeLock = lock.writeLock();
+        writeLock.lock();
+        try {
+            this.bookRepository.create(book);
+        } finally {
+            writeLock.unlock();
+        }
+    }
+
+    @Override
     public List<Book> getByAuthor(final String author) {
         Lock readLock = lock.readLock();
+        readLock.lock();
         try {
             return bookRepository.getAll()
                     .stream()
@@ -35,6 +47,7 @@ public class SimpleBookService implements BookService {
     @Override
     public Book getById(final Long bookId) {
         Lock readLock = lock.readLock();
+        readLock.lock();
         try {
             return bookRepository.getById(bookId)
                     .orElseThrow(() -> new RuntimeException("Cannot find a book by id=%d".formatted(bookId)));
@@ -50,6 +63,7 @@ public class SimpleBookService implements BookService {
         Objects.requireNonNull(title, "Parameter [title] must not be empty!");
         Objects.requireNonNull(rentedBy, "Parameter [rentedBy] must not be empty!");
         Lock writeLock = lock.writeLock();
+        writeLock.lock();
         try {
             return this.bookRepository.getAll()
                     .stream()
@@ -76,6 +90,7 @@ public class SimpleBookService implements BookService {
     @Override
     public void returnBook(final Book book) {
         Lock writeLock = lock.writeLock();
+        writeLock.lock();
         try {
             this.bookRepository.getById(book.getId())
                     .map(this::doReturnBook)
@@ -90,6 +105,7 @@ public class SimpleBookService implements BookService {
     @Override
     public boolean deleteById(final Long bookId) {
         Lock writeLock = lock.writeLock();
+        writeLock.lock();
         try {
             return this.bookRepository.deleteById(bookId);
         } catch (Exception ex) {

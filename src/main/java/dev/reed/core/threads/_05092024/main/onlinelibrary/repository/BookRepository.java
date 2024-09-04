@@ -41,6 +41,10 @@ public class BookRepository {
         return bookIdToBookMap.put(book.getId(), book);
     }
 
+    public void clear() {
+        bookIdToBookMap.clear();
+    }
+
     private static Book updateBookFields(final Book book) {
         Function<Book, Book> updateBookFieldsFunction = current -> {
             current.setTitle(book.getTitle());

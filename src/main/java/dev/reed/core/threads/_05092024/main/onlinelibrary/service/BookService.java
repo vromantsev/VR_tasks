@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface BookService {
 
+    void create(Book book);
+
     List<Book> getByAuthor(String author);
 
     Book getById(Long bookId);
