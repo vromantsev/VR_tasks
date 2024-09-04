@@ -139,7 +139,7 @@ public class OrderStatsTest {
     public void shouldCalculateAveragePriceForAllCustomersViaGivenCardNumberV1() {
         final String testCardNumber = "9785 5409 1111 5555";
         final BigDecimal avgPrice = OrderStats.averageProductPriceForCreditCard(customerStream, testCardNumber);
-        assertEquals(495.83, avgPrice.setScale(2, RoundingMode.CEILING).doubleValue(), 0.01, "Invalid average product price for card " + testCardNumber);
+        assertEquals(495.83, avgPrice.setScale(2, RoundingMode.CEILING).doubleValue(), 0.01,"Invalid average product price for card " + testCardNumber);
     }
 
     @org.junit.jupiter.api.Order(13)
@@ -155,7 +155,7 @@ public class OrderStatsTest {
     public void shouldCalculateAveragePriceForAllCustomersViaCardNumberV3() {
         final String testCardNumber = "6677 5432 9587 1670";
         final BigDecimal avgPrice = OrderStats.averageProductPriceForCreditCard(customerStream, testCardNumber);
-        assertEquals(505.64, avgPrice.setScale(2, RoundingMode.CEILING).doubleValue(), 0.01, "Invalid average product price for card " + testCardNumber);
+        assertEquals(505.64, avgPrice.setScale(2, RoundingMode.CEILING).doubleValue(), 0.01,"Invalid average product price for card " + testCardNumber);
     }
 
     @org.junit.jupiter.api.Order(15)
