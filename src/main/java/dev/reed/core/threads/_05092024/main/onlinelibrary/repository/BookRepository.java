@@ -7,14 +7,13 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 
 public class BookRepository {
 
     private final ConcurrentMap<Long, Book> bookIdToBookMap = new ConcurrentHashMap<>();
 
-    public void save(final Book book) {
+    public void create(final Book book) {
         long bookId = generateId();
         book.setId(bookId);
         bookIdToBookMap.put(bookId, book);
@@ -22,10 +21,6 @@ public class BookRepository {
 
     public Optional<Book> getById(final Long bookId) {
         return Optional.ofNullable(bookIdToBookMap.get(bookId));
-    }
-
-    public boolean isAvailable(final Long bookId) {
-        return bookIdToBookMap.containsKey(bookId);
     }
 
     public Book update(final Book book) {
@@ -40,6 +35,10 @@ public class BookRepository {
 
     public Collection<Book> getAll() {
         return this.bookIdToBookMap.values();
+    }
+
+    public Book save(final Book book) {
+        return bookIdToBookMap.put(book.getId(), book);
     }
 
     private static Book updateBookFields(final Book book) {

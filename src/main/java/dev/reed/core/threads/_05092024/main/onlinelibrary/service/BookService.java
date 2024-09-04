@@ -13,4 +13,7 @@ public interface BookService {
     Book rent(String title, String rentedBy);
 
     void returnBook(Book book);
+
+    boolean deleteById(Long bookId);
+
 }
