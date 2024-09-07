@@ -1,21 +1,25 @@
 package dev.reed.core.threads._05092024.main.onlinelibrary.service;
 
 import dev.reed.core.threads._05092024.main.onlinelibrary.entity.Book;
+import dev.reed.core.threads._05092024.main.onlinelibrary.lock.ExtendedReadWriteLock;
 import dev.reed.core.threads._05092024.main.onlinelibrary.repository.BookRepository;
-import lombok.RequiredArgsConstructor;
+import lombok.Getter;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-@RequiredArgsConstructor
 public class SimpleBookService implements BookService {
 
     private final BookRepository bookRepository;
-    private final ReadWriteLock lock = new ReentrantReadWriteLock();
+    @Getter
+    private final ExtendedReadWriteLock lock;
+
+    public SimpleBookService(final BookRepository bookRepository) {
+        this.bookRepository = bookRepository;
+        this.lock = new ExtendedReadWriteLock(new ReentrantReadWriteLock());
+    }
 
     /**
      * Acquired write lock and call lock() method
