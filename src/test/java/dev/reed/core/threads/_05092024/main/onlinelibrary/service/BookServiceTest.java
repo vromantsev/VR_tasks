@@ -95,13 +95,13 @@ public class BookServiceTest {
         int numberOfThreads = 10;
         ExecutorService executorService = Executors.newFixedThreadPool(numberOfThreads);
         CountDownLatch latch = new CountDownLatch(numberOfThreads);
-        assertNotNull(CommonUtils.getReadWriteLockField(bookService.getClass()), "It is mandatory for BookService to use lock, therefore it cannot be null!");
-        assertEquals(ReadWriteLock.class.getName(), CommonUtils.getLockClassName(bookService.getClass()), "BookService implementation must use ReadWriteLock!");
-        assertTrue(isLockUsed(readWriteLockField, "isReadLockUsed"), "Read lock must be acquired for this operation!");
         for (int i = 0; i < numberOfThreads; i++) {
             executorService.submit(() -> {
                 try {
                     List<Book> books = bookService.getByAuthor("Refactoring Guru");
+                    assertNotNull(CommonUtils.getReadWriteLockField(bookService.getClass()), "It is mandatory for BookService to use lock, therefore it cannot be null!");
+                    assertEquals(ReadWriteLock.class.getName(), CommonUtils.getLockClassName(bookService.getClass()), "BookService implementation must use ReadWriteLock!");
+                    assertTrue(isLockUsed(readWriteLockField, "isReadLockUsed"), "Read lock must be acquired for this operation!");
                     assertEquals(1, books.size());
                     assertEquals("Refactoring Guru", books.get(0).getAuthor());
                 } finally {
@@ -133,13 +133,13 @@ public class BookServiceTest {
         ExecutorService executorService = Executors.newFixedThreadPool(numberOfThreads);
         CountDownLatch latch = new CountDownLatch(numberOfThreads);
         Book first = this.bookRepository.getAll().iterator().next();
-        assertNotNull(CommonUtils.getReadWriteLockField(bookService.getClass()), "It is mandatory for BookService to use lock, therefore it cannot be null!");
-        assertEquals(ReadWriteLock.class.getName(), CommonUtils.getLockClassName(bookService.getClass()), "BookService implementation must use ReadWriteLock!");
-        assertTrue(isLockUsed(readWriteLockField, "isReadLockUsed"), "Read lock must be acquired for this operation!");
         for (int i = 0; i < numberOfThreads; i++) {
             executorService.submit(() -> {
                 try {
                     Book foundBook = bookService.getById(first.getId());
+                    assertNotNull(CommonUtils.getReadWriteLockField(bookService.getClass()), "It is mandatory for BookService to use lock, therefore it cannot be null!");
+                    assertEquals(ReadWriteLock.class.getName(), CommonUtils.getLockClassName(bookService.getClass()), "BookService implementation must use ReadWriteLock!");
+                    assertTrue(isLockUsed(readWriteLockField, "isReadLockUsed"), "Read lock must be acquired for this operation!");
                     assertEquals(first.getTitle(), foundBook.getTitle());
                 } finally {
                     latch.countDown();
@@ -198,6 +198,9 @@ public class BookServiceTest {
         executorService.submit(() -> {
             try {
                 rentedBookOneRef.set(bookService.rent("High Performance Java Persistence", "User1"));
+                assertNotNull(CommonUtils.getReadWriteLockField(bookService.getClass()), "It is mandatory for BookService to use lock, therefore it cannot be null!");
+                assertEquals(ReadWriteLock.class.getName(), CommonUtils.getLockClassName(bookService.getClass()), "BookService implementation must use ReadWriteLock!");
+                assertTrue(isLockUsed(readWriteLockField, "isWriteLockUsed"), "Write lock must be acquired for this operation!");
             } catch (Exception ignored) {
             }
             latch.countDown();
@@ -206,6 +209,9 @@ public class BookServiceTest {
         executorService.submit(() -> {
             try {
                 rentedBookTwoRef.set(bookService.rent("High Performance Java Persistence", "User2"));
+                assertNotNull(CommonUtils.getReadWriteLockField(bookService.getClass()), "It is mandatory for BookService to use lock, therefore it cannot be null!");
+                assertEquals(ReadWriteLock.class.getName(), CommonUtils.getLockClassName(bookService.getClass()), "BookService implementation must use ReadWriteLock!");
+                assertTrue(isLockUsed(readWriteLockField, "isWriteLockUsed"), "Write lock must be acquired for this operation!");
             } catch (Exception ignored) {
             }
             latch.countDown();
@@ -213,9 +219,6 @@ public class BookServiceTest {
 
         latch.await();
         executorService.shutdown();
-        assertNotNull(CommonUtils.getReadWriteLockField(bookService.getClass()), "It is mandatory for BookService to use lock, therefore it cannot be null!");
-        assertEquals(ReadWriteLock.class.getName(), CommonUtils.getLockClassName(bookService.getClass()), "BookService implementation must use ReadWriteLock!");
-        assertTrue(isLockUsed(readWriteLockField, "isWriteLockUsed"), "Write lock must be acquired for this operation!");
         assertNotNull(rentedBookOneRef.get(), "User %s should successfully rent the book".formatted("User1"));
         assertNull(rentedBookTwoRef.get(), "User %s should not be able to rent the book".formatted("User2"));
     }
@@ -246,12 +249,12 @@ public class BookServiceTest {
         Book book = bookRepository.getAll().iterator().next();
         ExecutorService executorService = Executors.newFixedThreadPool(2);
         CountDownLatch latch = new CountDownLatch(2);
-        assertNotNull(CommonUtils.getReadWriteLockField(bookService.getClass()), "It is mandatory for BookService to use lock, therefore it cannot be null!");
-        assertEquals(ReadWriteLock.class.getName(), CommonUtils.getLockClassName(bookService.getClass()), "BookService implementation must use ReadWriteLock!");
-        assertTrue(isLockUsed(readWriteLockField, "isWriteLockUsed"), "Write lock must be acquired for this operation!");
         executorService.submit(() -> {
             try {
                 bookService.returnBook(book);
+                assertNotNull(CommonUtils.getReadWriteLockField(bookService.getClass()), "It is mandatory for BookService to use lock, therefore it cannot be null!");
+                assertEquals(ReadWriteLock.class.getName(), CommonUtils.getLockClassName(bookService.getClass()), "BookService implementation must use ReadWriteLock!");
+                assertTrue(isLockUsed(readWriteLockField, "isWriteLockUsed"), "Write lock must be acquired for this operation!");
             } catch (Exception ignored) {
             }
             latch.countDown();
@@ -260,6 +263,9 @@ public class BookServiceTest {
         executorService.submit(() -> {
             try {
                 bookService.returnBook(book);
+                assertNotNull(CommonUtils.getReadWriteLockField(bookService.getClass()), "It is mandatory for BookService to use lock, therefore it cannot be null!");
+                assertEquals(ReadWriteLock.class.getName(), CommonUtils.getLockClassName(bookService.getClass()), "BookService implementation must use ReadWriteLock!");
+                assertTrue(isLockUsed(readWriteLockField, "isWriteLockUsed"), "Write lock must be acquired for this operation!");
             } catch (Exception ignored) {
             }
             latch.countDown();
@@ -295,6 +301,9 @@ public class BookServiceTest {
         executorService.submit(() -> {
             try {
                 bookService.deleteById(book.getId());
+                assertNotNull(CommonUtils.getReadWriteLockField(bookService.getClass()), "It is mandatory for BookService to use lock, therefore it cannot be null!");
+                assertEquals(ReadWriteLock.class.getName(), CommonUtils.getLockClassName(bookService.getClass()), "BookService implementation must use ReadWriteLock!");
+                assertTrue(isLockUsed(readWriteLockField, "isWriteLockUsed"), "Write lock must be acquired for this operation!");
             } catch (Exception ignored) {
             }
             latch.countDown();
@@ -303,6 +312,9 @@ public class BookServiceTest {
         executorService.submit(() -> {
             try {
                 bookService.deleteById(book.getId());
+                assertNotNull(CommonUtils.getReadWriteLockField(bookService.getClass()), "It is mandatory for BookService to use lock, therefore it cannot be null!");
+                assertEquals(ReadWriteLock.class.getName(), CommonUtils.getLockClassName(bookService.getClass()), "BookService implementation must use ReadWriteLock!");
+                assertTrue(isLockUsed(readWriteLockField, "isWriteLockUsed"), "Write lock must be acquired for this operation!");
             } catch (Exception ignored) {
             }
             latch.countDown();
@@ -310,9 +322,6 @@ public class BookServiceTest {
 
         latch.await();
         executorService.shutdown();
-        assertNotNull(CommonUtils.getReadWriteLockField(bookService.getClass()), "It is mandatory for BookService to use lock, therefore it cannot be null!");
-        assertEquals(ReadWriteLock.class.getName(), CommonUtils.getLockClassName(bookService.getClass()), "BookService implementation must use ReadWriteLock!");
-        assertTrue(isLockUsed(readWriteLockField, "isWriteLockUsed"), "Write lock must be acquired for this operation!");
         assertFalse(bookRepository.getById(book.getId()).isPresent(), "Book should be removed from repository after concurrent delete attempts");
     }
 
